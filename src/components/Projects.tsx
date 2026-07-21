@@ -27,7 +27,7 @@ export default function Projects() {
       <div className="sticky top-0 h-screen flex flex-col justify-center overflow-hidden">
         
         {/* Header */}
-        <div className="absolute top-12 left-4 sm:left-12 z-20 pointer-events-none">
+        <div className="absolute top-28 sm:top-32 left-4 sm:left-12 z-20 pointer-events-none">
           <div className="text-mask">
             <motion.h2 
               initial={{ y: 100 }}

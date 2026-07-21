@@ -59,11 +59,11 @@ export default function Hero() {
           initial={{ opacity: 0, y: 30 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8, delay: 0.5, ease: [0.21, 0.47, 0.32, 0.98] }}
-          className="max-w-5xl"
+          className="max-w-5xl px-4 sm:px-8 w-full text-center sm:text-left"
         >
           {/* Main Name */}
           <h1 
-            className="text-5xl sm:text-7xl md:text-8xl lg:text-9xl font-extrabold tracking-tighter leading-[0.9] mb-6 text-[var(--text-primary)] uppercase glitch-effect"
+            className="text-4xl sm:text-7xl md:text-8xl lg:text-9xl font-extrabold tracking-tighter leading-[0.9] mb-6 text-[var(--text-primary)] uppercase glitch-effect"
             data-text={personalInfo.name}
           >
             {personalInfo.name}
