@@ -2,7 +2,9 @@
 
 export const personalInfo = {
   name: "Ranjan Kumar",
+  title: "AI & Full-Stack Engineer",
   tagline: "AI Engineer crafting intelligent software from ideas to production.",
+  about: "I specialize in designing and engineering premium, responsive frontends and pairing them with highly scalable backends. From UI/UX prototyping to production deployment, I focus on performance, resource efficiency, and immersive digital experiences.",
   degree: "B.Tech CSE (AI)",
   email: "ranjan777work@gmail.com",
   linkedin: "https://www.linkedin.com/in/ranjan-kumar-10766b248/",
