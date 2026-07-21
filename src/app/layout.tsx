@@ -7,6 +7,9 @@ import Noise from "@/components/Noise";
 import AuroraBackground from "@/components/AuroraBackground";
 import TerminalOverlay from "@/components/TerminalOverlay";
 import AudioController from "@/components/AudioController";
+import MobileTerminalButton from "@/components/MobileTerminalButton";
+import { Analytics } from "@vercel/analytics/react";
+import { SpeedInsights } from "@vercel/speed-insights/next";
 
 const inter = Inter({
   variable: "--font-body",
@@ -54,6 +57,7 @@ export default function RootLayout({
       <body className="min-h-screen bg-[var(--bg-void)] text-[var(--text-primary)] font-[family-name:var(--font-body)] overflow-x-hidden cursor-none selection:bg-[var(--accent-cyan)] selection:text-black">
         <CustomCursor />
         <AudioController />
+        <MobileTerminalButton />
         <TerminalOverlay />
         <SmoothScroll>
           <AuroraBackground />
@@ -61,6 +65,10 @@ export default function RootLayout({
           {/* Main Content */}
           <div className="relative z-20">{children}</div>
         </SmoothScroll>
+        
+        {/* Vercel Metrics */}
+        <Analytics />
+        <SpeedInsights />
       </body>
     </html>
   );
