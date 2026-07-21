@@ -39,7 +39,7 @@ export default function Hero() {
     <section 
       id="hero"
       ref={ref} 
-      className="relative h-screen w-full flex flex-col items-center justify-center overflow-hidden bg-[var(--bg-void)]"
+      className="relative min-h-[100svh] w-full flex flex-col items-center justify-center overflow-hidden bg-[var(--bg-void)] pt-24 pb-12"
     >
       <NeuralNetwork3D />
       
@@ -59,26 +59,26 @@ export default function Hero() {
           initial={{ opacity: 0, y: 30 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8, delay: 0.5, ease: [0.21, 0.47, 0.32, 0.98] }}
-          className="max-w-5xl px-4 sm:px-8 w-full text-center sm:text-left"
+          className="max-w-5xl px-4 sm:px-8 w-full text-center sm:text-left flex flex-col items-center sm:items-start"
         >
           {/* Main Name */}
           <h1 
-            className="text-4xl sm:text-7xl md:text-8xl lg:text-9xl font-extrabold tracking-tighter leading-[0.9] mb-6 text-[var(--text-primary)] uppercase glitch-effect"
+            className="text-4xl sm:text-7xl md:text-8xl lg:text-9xl font-extrabold tracking-tighter leading-[0.9] mb-4 text-[var(--text-primary)] uppercase glitch-effect"
             data-text={personalInfo.name}
           >
             {personalInfo.name}
           </h1>
           
           {/* Brutalist Title Ribbon */}
-          <div className="inline-block bg-[var(--text-primary)] text-[var(--bg-void)] px-4 py-2 font-[family-name:var(--font-mono)] font-bold tracking-widest text-xs sm:text-sm uppercase mb-8">
+          <div className="inline-block bg-[var(--text-primary)] text-[var(--bg-void)] px-3 py-1.5 sm:px-4 sm:py-2 font-[family-name:var(--font-mono)] font-bold tracking-widest text-[10px] sm:text-sm uppercase mb-6 sm:mb-8 text-center">
             {personalInfo.title}
           </div>
 
-          <p className="text-lg sm:text-xl text-[var(--text-secondary)] font-light max-w-2xl leading-relaxed mb-10">
+          <p className="text-sm sm:text-xl text-[var(--text-secondary)] font-light max-w-2xl leading-relaxed mb-8 sm:mb-10 text-center sm:text-left">
             {personalInfo.about}
           </p>
 
-          <div className="flex flex-col sm:flex-row items-center justify-center gap-6">
+          <div className="flex flex-col sm:flex-row items-center justify-center sm:justify-start gap-4 sm:gap-6 w-full sm:w-auto">
             <Magnetic strength={0.2}>
               <Link 
                 href="#projects"
@@ -130,7 +130,7 @@ export default function Hero() {
         {/* Scroll Indicator */}
         <motion.div 
           style={{ opacity }}
-          className="absolute left-1/2 -translate-x-1/2 bottom-8 flex flex-col items-center gap-2"
+          className="mt-8 sm:mt-16 flex flex-col items-center gap-2"
         >
           <span className="font-[family-name:var(--font-mono)] text-[10px] text-[var(--text-muted)] uppercase tracking-widest">
             Scroll_Down
