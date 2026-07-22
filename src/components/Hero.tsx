@@ -8,6 +8,7 @@ import { personalInfo } from "@/lib/data";
 import Magnetic from "@/components/Magnetic";
 import TextScramble from "@/components/TextScramble";
 import NeuralNetwork3D from "@/components/NeuralNetwork3D";
+import SpotlightProfile from "@/components/SpotlightProfile";
 import { useSciFiSound } from "@/hooks/useSciFiSound";
 
 export default function Hero() {
@@ -42,6 +43,7 @@ export default function Hero() {
       className="relative min-h-[100svh] w-full flex flex-col items-center justify-center overflow-hidden bg-[var(--bg-void)] pt-24 pb-12"
     >
       <NeuralNetwork3D />
+      <SpotlightProfile />
       
       {/* Scroll Parallax Container */}
       <motion.div 
