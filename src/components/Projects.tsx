@@ -1,190 +1,191 @@
 "use client";
 
-import { useRef, useState } from "react";
-import { motion, useScroll, useVelocity, useSpring, useTransform, MotionValue } from "framer-motion";
+import { useRef, useState, useEffect } from "react";
+import { motion, useMotionValue, useSpring, useTransform, AnimatePresence } from "framer-motion";
 import { projects } from "@/lib/data";
-import { ExternalLink, GitBranch } from "lucide-react";
+import { ExternalLink } from "lucide-react";
 import CyberText from "@/components/CyberText";
+import { useSciFiSound } from "@/hooks/useSciFiSound";
 
 export default function Projects() {
   const containerRef = useRef<HTMLDivElement>(null);
-  const [hoveredIdx, setHoveredIdx] = useState<number | null>(null);
+  const { playHover } = useSciFiSound();
   
-  // Scroll velocity for global skew
-  const { scrollY } = useScroll();
-  const scrollVelocity = useVelocity(scrollY);
-  const smoothVelocity = useSpring(scrollVelocity, { damping: 50, stiffness: 400 });
-  const skewY = useTransform(smoothVelocity, [-1000, 0, 1000], [-2, 0, 2]);
+  // Track which project is hovered
+  const [hoveredIdx, setHoveredIdx] = useState<number | null>(null);
+  const hoveredProject = hoveredIdx !== null ? projects[hoveredIdx] : null;
+
+  // Global mouse tracking for the 3D tilt effect
+  const mouseX = useMotionValue(0);
+  const mouseY = useMotionValue(0);
+
+  // Smooth springs for the mouse values
+  const springConfig = { damping: 25, stiffness: 200, mass: 0.5 };
+  const smoothMouseX = useSpring(mouseX, springConfig);
+  const smoothMouseY = useSpring(mouseY, springConfig);
+
+  // Transform mouse position into 3D rotation degrees (-15 to 15 deg)
+  const rotateX = useTransform(smoothMouseY, [-500, 500], [15, -15]);
+  const rotateY = useTransform(smoothMouseX, [-500, 500], [-15, 15]);
+
+  // Transform mouse position for subtle translation (-40px to +40px)
+  const translateX = useTransform(smoothMouseX, [-500, 500], [-40, 40]);
+  const translateY = useTransform(smoothMouseY, [-500, 500], [-40, 40]);
+
+  useEffect(() => {
+    const handleMouseMove = (e: MouseEvent) => {
+      // Calculate mouse position relative to the center of the window
+      const x = e.clientX - window.innerWidth / 2;
+      const y = e.clientY - window.innerHeight / 2;
+      mouseX.set(x);
+      mouseY.set(y);
+    };
+
+    window.addEventListener("mousemove", handleMouseMove);
+    return () => window.removeEventListener("mousemove", handleMouseMove);
+  }, [mouseX, mouseY]);
 
   return (
-    <section id="projects" ref={containerRef} className="relative bg-[var(--bg-void)] overflow-hidden">
-      
-      {/* Section Header */}
-      <div className="px-6 sm:px-12 lg:px-20 pt-32 sm:pt-48 pb-16 sm:pb-24">
-        <div className="text-mask mb-2">
-          <motion.h2 
-            initial={{ y: "100%" }}
-            whileInView={{ y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.8, ease: [0.19, 1.0, 0.22, 1.0] }}
-            className="text-4xl sm:text-6xl md:text-8xl font-bold uppercase tracking-tighter text-[var(--text-muted)]"
-          >
-            <CyberText text="FEATURED" />
-          </motion.h2>
-        </div>
-        <div className="text-mask">
-          <motion.h2 
-            initial={{ y: "100%" }}
-            whileInView={{ y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.8, ease: [0.19, 1.0, 0.22, 1.0], delay: 0.1 }}
-            className="text-4xl sm:text-6xl md:text-8xl font-bold uppercase tracking-tighter text-[var(--text-primary)]"
-          >
-            <CyberText text="WORK" /> <span className="text-sm font-[family-name:var(--font-mono)] font-normal tracking-widest align-top text-[var(--accent-cyan)]">0{projects.length}</span>
-          </motion.h2>
-        </div>
+    <section 
+      id="projects" 
+      ref={containerRef} 
+      className="relative bg-[var(--bg-void)] py-32 sm:py-48 min-h-screen"
+    >
+      {/* 3D Global Image Overlay */}
+      <div className="fixed inset-0 pointer-events-none z-0 flex items-center justify-center overflow-hidden">
+        <AnimatePresence>
+          {hoveredProject && (
+            <motion.div
+              initial={{ opacity: 0, scale: 0.8, filter: "blur(10px)" }}
+              animate={{ opacity: 1, scale: 1, filter: "blur(0px)" }}
+              exit={{ opacity: 0, scale: 0.9, filter: "blur(5px)" }}
+              transition={{ duration: 0.6, ease: [0.19, 1.0, 0.22, 1.0] }}
+              style={{
+                rotateX,
+                rotateY,
+                x: translateX,
+                y: translateY,
+                perspective: 1200,
+                transformStyle: "preserve-3d"
+              }}
+              className="relative w-[70vw] sm:w-[50vw] md:w-[40vw] h-[60vh] rounded-sm overflow-hidden border border-[var(--border-glass)] shadow-[0_0_50px_rgba(0,255,255,0.1)]"
+            >
+              {/* Abstract fallback gradient based on index (since images are null) */}
+              <div className={`absolute inset-0 transition-colors duration-700 ${
+                hoveredIdx! % 3 === 0 
+                  ? "bg-gradient-to-br from-cyan-900/60 via-slate-900 to-[var(--bg-void)]" 
+                  : hoveredIdx! % 3 === 1
+                    ? "bg-gradient-to-br from-purple-900/60 via-slate-900 to-[var(--bg-void)]"
+                    : "bg-gradient-to-br from-amber-900/60 via-slate-900 to-[var(--bg-void)]"
+              }`} />
+              
+              <div className="absolute inset-0 noise-overlay opacity-50" />
+              
+              {/* Large project name inside the card */}
+              <div 
+                className="absolute inset-0 flex items-center justify-center font-extrabold uppercase text-[12vw] sm:text-[6vw] tracking-tighter text-white/5 whitespace-nowrap"
+                style={{ transform: "translateZ(50px)" }} // Pop out in 3D
+              >
+                {hoveredProject.title.split(" ")[0]}
+              </div>
+            </motion.div>
+          )}
+        </AnimatePresence>
       </div>
 
-      {/* Project Rows — Ricardo Chance Style */}
-      <div className="flex flex-col">
-        {projects.map((project, i) => (
-          <ProjectRow 
-            key={project.title} 
-            project={project} 
-            index={i} 
-            skewY={skewY}
-            isHovered={hoveredIdx === i}
-            onHover={() => setHoveredIdx(i)}
-            onLeave={() => setHoveredIdx(null)}
-            anyHovered={hoveredIdx !== null}
-          />
-        ))}
+      <div className="relative z-10 w-full flex flex-col">
+        {/* Section Header */}
+        <div className="px-6 sm:px-12 lg:px-20 mb-24 flex flex-col pointer-events-none">
+          <div className="text-mask mb-2">
+            <motion.h2 
+              initial={{ y: "100%" }}
+              whileInView={{ y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.8, ease: [0.19, 1.0, 0.22, 1.0] }}
+              className="text-4xl sm:text-6xl md:text-8xl font-bold uppercase tracking-tighter text-[var(--text-muted)]"
+            >
+              <CyberText text="FEATURED" />
+            </motion.h2>
+          </div>
+          <div className="text-mask">
+            <motion.h2 
+              initial={{ y: "100%" }}
+              whileInView={{ y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.8, ease: [0.19, 1.0, 0.22, 1.0], delay: 0.1 }}
+              className="text-4xl sm:text-6xl md:text-8xl font-bold uppercase tracking-tighter text-[var(--text-primary)]"
+            >
+              <CyberText text="WORK" /> <span className="text-sm font-[family-name:var(--font-mono)] font-normal tracking-widest align-top text-[var(--accent-cyan)]">0{projects.length}</span>
+            </motion.h2>
+          </div>
+        </div>
+
+        {/* Project List */}
+        <div className="flex flex-col w-full relative mix-blend-difference text-white">
+          {projects.map((project, i) => {
+            const isHovered = hoveredIdx === i;
+            const anyHovered = hoveredIdx !== null;
+            const isDimmed = anyHovered && !isHovered;
+
+            return (
+              <a
+                key={project.title}
+                href={project.liveUrl !== "#" ? project.liveUrl : project.githubUrl}
+                target="_blank"
+                rel="noreferrer"
+                onMouseEnter={() => {
+                  setHoveredIdx(i);
+                  playHover();
+                }}
+                onMouseLeave={() => setHoveredIdx(null)}
+                className="group block relative border-t border-[var(--border-glass)] hover:border-white/20 transition-colors duration-500 cursor-pointer"
+              >
+                <div className={`flex flex-col sm:flex-row items-start sm:items-center justify-between px-6 sm:px-12 lg:px-20 py-10 sm:py-16 transition-all duration-700 ${
+                  isDimmed ? "opacity-20 blur-[2px] grayscale" : "opacity-100 blur-0 grayscale-0"
+                }`}>
+                  
+                  {/* Left: Project Title */}
+                  <div className="flex flex-col sm:flex-row sm:items-baseline gap-4 sm:gap-8">
+                    <span className={`font-[family-name:var(--font-mono)] text-xs tracking-widest transition-colors duration-500 ${
+                      isHovered ? "text-cyan-300" : "text-white/40 group-hover:text-white/60"
+                    }`}>
+                      0{i + 1}
+                    </span>
+                    <h3 className={`text-4xl sm:text-6xl lg:text-8xl font-black uppercase tracking-tighter transition-all duration-500 ${
+                      isHovered 
+                        ? "text-cyan-100 translate-x-4 sm:translate-x-8" 
+                        : "text-white/80 group-hover:text-white"
+                    }`}>
+                      {project.title.split(" ")[0]} 
+                      {/* Only showing first word huge, rest small */}
+                      <span className="block sm:inline text-xl sm:text-2xl font-light tracking-normal text-white/40 ml-0 sm:ml-6 mt-2 sm:mt-0">
+                        {project.title.split(" ").slice(1).join(" ")}
+                      </span>
+                    </h3>
+                  </div>
+
+                  {/* Right: See Live */}
+                  <div className="mt-8 sm:mt-0 shrink-0">
+                    <div className={`flex items-center gap-3 font-[family-name:var(--font-mono)] text-sm uppercase tracking-widest transition-all duration-500 ${
+                      isHovered ? "text-cyan-300 translate-x-0" : "text-white/40 -translate-x-4 opacity-0 sm:opacity-100 sm:translate-x-0"
+                    }`}>
+                      <span>See live</span>
+                      <div className={`w-10 h-10 rounded-full border flex items-center justify-center transition-all duration-500 ${
+                        isHovered ? "border-cyan-300 bg-cyan-300/10" : "border-white/20"
+                      }`}>
+                        <ExternalLink size={14} className={isHovered ? "-translate-y-0.5 translate-x-0.5" : ""} />
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </a>
+            );
+          })}
+          
+          {/* Final Border */}
+          <div className="border-t border-[var(--border-glass)]" />
+        </div>
       </div>
     </section>
-  );
-}
-
-interface ProjectRowProps {
-  project: (typeof projects)[number];
-  index: number;
-  skewY: MotionValue<number>;
-  isHovered: boolean;
-  onHover: () => void;
-  onLeave: () => void;
-  anyHovered: boolean;
-}
-
-function ProjectRow({ project, index, skewY, isHovered, onHover, onLeave, anyHovered }: ProjectRowProps) {
-  const rowRef = useRef<HTMLDivElement>(null);
-  
-  // Per-row scroll progress for parallax on the image
-  const { scrollYProgress } = useScroll({
-    target: rowRef,
-    offset: ["start end", "end start"],
-  });
-  
-  const imageY = useTransform(scrollYProgress, [0, 1], [60, -60]);
-  const imageScale = useTransform(scrollYProgress, [0, 0.5, 1], [0.95, 1, 0.95]);
-
-  // Dim opacity when another project is hovered
-  const dimmed = anyHovered && !isHovered;
-
-  return (
-    <motion.div 
-      ref={rowRef}
-      style={{ skewY }}
-      className="origin-center"
-      onMouseEnter={onHover}
-      onMouseLeave={onLeave}
-    >
-      {/* Separator line */}
-      <div className="h-px bg-[var(--border-glass)] mx-6 sm:mx-12 lg:mx-20" />
-      
-      {/* Row Content */}
-      <a
-        href={project.liveUrl !== "#" ? project.liveUrl : project.githubUrl}
-        target="_blank"
-        rel="noreferrer"
-        className="block group cursor-pointer"
-      >
-        {/* Top bar: project name left, "See live" right */}
-        <div className={`flex items-center justify-between px-6 sm:px-12 lg:px-20 py-6 sm:py-8 transition-opacity duration-500 ${dimmed ? "opacity-30" : "opacity-100"}`}>
-          <div className="flex items-baseline gap-4 sm:gap-8">
-            <span className="font-[family-name:var(--font-mono)] text-[10px] sm:text-xs text-[var(--accent-cyan)] tracking-widest">
-              0{index + 1}
-            </span>
-            <h3 className="text-lg sm:text-2xl lg:text-3xl font-medium text-[var(--text-primary)] group-hover:text-[var(--accent-cyan)] transition-colors duration-500 tracking-tight">
-              {project.title}
-            </h3>
-          </div>
-          <div className="flex items-center gap-3 font-[family-name:var(--font-mono)] text-[10px] sm:text-xs uppercase tracking-widest text-[var(--text-muted)] group-hover:text-[var(--text-primary)] transition-colors duration-500">
-            <span className="hidden sm:inline">See live</span>
-            <ExternalLink size={12} className="group-hover:translate-x-1 group-hover:-translate-y-1 transition-transform duration-300" />
-          </div>
-        </div>
-
-        {/* Massive Image Container */}
-        <div className={`px-6 sm:px-12 lg:px-20 overflow-hidden transition-opacity duration-500 ${dimmed ? "opacity-30" : "opacity-100"}`}>
-          <motion.div 
-            style={{ y: imageY, scale: imageScale }}
-            className="w-full h-[40vh] sm:h-[55vh] lg:h-[70vh] relative overflow-hidden rounded-sm"
-          >
-            {/* Abstract gradient background (since no real images) */}
-            <div className={`absolute inset-0 transition-transform duration-1000 ease-out group-hover:scale-105 ${
-              index % 3 === 0 
-                ? "bg-gradient-to-br from-cyan-900/40 via-[var(--bg-surface)] to-emerald-900/30" 
-                : index % 3 === 1
-                  ? "bg-gradient-to-br from-purple-900/40 via-[var(--bg-surface)] to-blue-900/30"
-                  : "bg-gradient-to-br from-amber-900/30 via-[var(--bg-surface)] to-rose-900/30"
-            }`} />
-            
-            {/* Noise texture overlay */}
-            <div className="absolute inset-0 noise-overlay opacity-40" />
-            
-            {/* Giant project name watermark */}
-            <div className="absolute inset-0 flex items-center justify-center pointer-events-none overflow-hidden">
-              <span className="text-[18vw] sm:text-[14vw] font-extrabold tracking-tighter uppercase text-white/[0.03] group-hover:text-white/[0.08] transition-all duration-1000 leading-none whitespace-nowrap select-none">
-                {project.title.split(" ")[0]}
-              </span>
-            </div>
-
-            {/* Tech stack pills floating in the image */}
-            <div className="absolute bottom-6 left-6 sm:bottom-8 sm:left-8 flex flex-wrap gap-2 max-w-[80%]">
-              {project.techStack.slice(0, 4).map((tech, ti) => (
-                <motion.span 
-                  key={tech}
-                  initial={{ opacity: 0, y: 20 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  viewport={{ once: true }}
-                  transition={{ delay: ti * 0.1 + 0.3 }}
-                  className="text-[10px] font-[family-name:var(--font-mono)] text-[var(--text-muted)] uppercase border border-[var(--border-glass)] backdrop-blur-sm bg-black/30 px-3 py-1.5 rounded-full"
-                >
-                  {tech}
-                </motion.span>
-              ))}
-            </div>
-            
-            {/* Large number overlay */}
-            <div className="absolute top-4 right-6 sm:top-6 sm:right-8 text-[6rem] sm:text-[10rem] font-bold text-white/[0.03] font-[family-name:var(--font-mono)] leading-none select-none pointer-events-none">
-              0{index + 1}
-            </div>
-          </motion.div>
-        </div>
-
-        {/* Description row below image */}
-        <div className={`px-6 sm:px-12 lg:px-20 py-6 sm:py-8 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 transition-opacity duration-500 ${dimmed ? "opacity-30" : "opacity-100"}`}>
-          <p className="text-sm sm:text-base text-[var(--text-secondary)] font-light max-w-2xl leading-relaxed">
-            {project.description}
-          </p>
-          <div className="flex items-center gap-4 shrink-0">
-            {project.githubUrl !== "#" && (
-              <span className="flex items-center gap-2 font-[family-name:var(--font-mono)] text-[10px] uppercase tracking-widest text-[var(--text-muted)]">
-                <GitBranch size={12} /> Source
-              </span>
-            )}
-          </div>
-        </div>
-      </a>
-    </motion.div>
   );
 }
