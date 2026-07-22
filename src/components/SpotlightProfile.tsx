@@ -34,14 +34,14 @@ export default function SpotlightProfile() {
       {/* Base Layer: Dimmed, grayscale, deeply blended with the background */}
       <div 
         className="absolute inset-x-0 bottom-0 h-[80vh] sm:inset-0 sm:h-auto bg-contain sm:bg-cover bg-bottom sm:bg-center bg-no-repeat opacity-10 mix-blend-luminosity grayscale blur-sm"
-        style={{ backgroundImage: "url('/profile.jpg')" }}
+        style={{ backgroundImage: "url('/profile.png')" }}
       />
 
       {/* Reveal Layer: Full color spotlight masked by cursor */}
       <motion.div
         className="absolute inset-x-0 bottom-0 h-[80vh] sm:inset-0 sm:h-auto bg-contain sm:bg-cover bg-bottom sm:bg-center bg-no-repeat mix-blend-screen transition-opacity duration-1000"
         style={{
-          backgroundImage: "url('/profile.jpg')",
+          backgroundImage: "url('/profile.png')",
           WebkitMaskImage: maskImage,
           maskImage: maskImage,
           opacity: hasMoved ? 0.6 : 0.2,
