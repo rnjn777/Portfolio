@@ -123,7 +123,7 @@ export const projects = [
     ],
     liveUrl: "#",
     githubUrl: "#",
-    image: null,
+    image: "/projects/hanyura.png",
   },
   {
     title: "Urban Green Corridor Platform",
@@ -142,7 +142,7 @@ export const projects = [
     ],
     liveUrl: "#",
     githubUrl: "#",
-    image: null,
+    image: "/projects/urban.png",
   },
   {
     title: "KrishiQuest",
@@ -161,7 +161,7 @@ export const projects = [
     ],
     liveUrl: "#",
     githubUrl: "#",
-    image: null,
+    image: "/projects/krishi.png",
   },
   {
     title: "House Price Prediction",
@@ -180,26 +180,7 @@ export const projects = [
     ],
     liveUrl: "#",
     githubUrl: "#",
-    image: null,
-  },
-  {
-    title: "Portfolio Website",
-    description:
-      "This very website — a premium dark futuristic portfolio built with Next.js, Tailwind CSS, and Framer Motion.",
-    problem:
-      "Generic portfolio templates don't communicate technical depth or design sensibility.",
-    solution:
-      "Designed and engineered a custom portfolio with cinematic animations, glassmorphism, and an immersive dark aesthetic.",
-    techStack: ["Next.js", "TypeScript", "Tailwind CSS", "Framer Motion", "GSAP"],
-    features: [
-      "Custom aurora mesh background",
-      "Command palette (Ctrl+K)",
-      "GSAP scroll animations",
-      "Responsive glassmorphism design",
-    ],
-    liveUrl: "#",
-    githubUrl: "#",
-    image: null,
+    image: "/projects/house.png",
   },
 ];
 

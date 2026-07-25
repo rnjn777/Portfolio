@@ -2,6 +2,9 @@
 
 import { useEffect, useRef, useCallback } from "react";
 
+// Global state to sync sound on/off across all components
+let globalSoundEnabled = false;
+
 export function useSciFiSound() {
   const audioCtxRef = useRef<AudioContext | null>(null);
   const ambientOscillatorRef = useRef<OscillatorNode | null>(null);
@@ -23,7 +26,12 @@ export function useSciFiSound() {
     return audioCtxRef.current;
   }, []);
 
+  const setSoundEnabled = useCallback((enabled: boolean) => {
+    globalSoundEnabled = enabled;
+  }, []);
+
   const playHover = useCallback(() => {
+    if (!globalSoundEnabled) return;
     const ctx = getAudioContext();
     if (!ctx) return;
     
@@ -46,6 +54,7 @@ export function useSciFiSound() {
   }, [getAudioContext]);
 
   const playClick = useCallback(() => {
+    if (!globalSoundEnabled) return;
     const ctx = getAudioContext();
     if (!ctx) return;
     
@@ -68,6 +77,7 @@ export function useSciFiSound() {
   }, [getAudioContext]);
 
   const playType = useCallback(() => {
+    if (!globalSoundEnabled) return;
     const ctx = getAudioContext();
     if (!ctx) return;
     
@@ -99,6 +109,7 @@ export function useSciFiSound() {
   }, [getAudioContext]);
 
   const toggleAmbient = useCallback((play: boolean) => {
+    if (!globalSoundEnabled && play) return;
     const ctx = getAudioContext();
     if (!ctx) return;
     
@@ -144,5 +155,5 @@ export function useSciFiSound() {
     }
   }, [getAudioContext]);
 
-  return { playHover, playClick, playType, toggleAmbient, getAudioContext };
+  return { playHover, playClick, playType, toggleAmbient, setSoundEnabled, getAudioContext };
 }

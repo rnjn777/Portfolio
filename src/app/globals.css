@@ -5,6 +5,7 @@
   /* Extremely deep space void */
   --bg-void: #030303;
   --bg-surface: #0a0a0c;
+  --bg-glass: rgba(10, 10, 12, 0.4);
   
   /* Neural/Energy Accents */
   --accent-glow: #38bdf8;
@@ -20,6 +21,23 @@
   --border-glass: rgba(255, 255, 255, 0.06);
 }
 
+/* ===== DESIGN TOKENS (Light Mode) ===== */
+.light, [data-theme='light'] {
+  --bg-void: #fafafa;
+  --bg-surface: #ffffff;
+  --bg-glass: rgba(255, 255, 255, 0.6);
+  
+  --accent-glow: #0369a1;
+  --accent-cyan: #0f766e;
+  --accent-purple: #6d28d9;
+
+  --text-primary: #09090b;
+  --text-secondary: #27272a;
+  --text-muted: #52525b;
+
+  --border-glass: rgba(0, 0, 0, 0.08);
+}
+
 /* ===== BASE ===== */
 html {
   scroll-behavior: auto; /* Managed by Lenis */
@@ -29,13 +47,17 @@ body {
   background: var(--bg-void);
   color: var(--text-primary);
   overflow-x: hidden;
-  /* Hide default cursor to use custom cursor */
-  cursor: none;
+  /* Hide default cursor on fine pointers only to use custom cursor */
 }
 
-/* Force hiding cursor on interactive elements as well */
-a, button, input, textarea, select {
-  cursor: none !important;
+@media (pointer: fine) {
+  body {
+    cursor: none;
+  }
+  /* Force hiding cursor on interactive elements as well */
+  a, button, input, textarea, select {
+    cursor: none !important;
+  }
 }
 
 ::selection {
@@ -64,7 +86,7 @@ a, button, input, textarea, select {
 
 /* Smooth Gradient Text */
 .gradient-text {
-  background: linear-gradient(to right, #ffffff, #a1a1aa);
+  background: linear-gradient(to right, var(--text-primary), var(--text-secondary));
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
@@ -163,7 +185,7 @@ a, button, input, textarea, select {
 
 /* Abstract Glass Pane */
 .neural-glass {
-  background: rgba(10, 10, 12, 0.4);
+  background: var(--bg-glass);
   backdrop-filter: blur(24px);
   -webkit-backdrop-filter: blur(24px);
   border: 1px solid var(--border-glass);
@@ -172,4 +194,49 @@ a, button, input, textarea, select {
 /* Magnetic Hover Items (handled by JS, but keeping transition smooth) */
 .magnetic {
   transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+/* Adaptive Glows */
+.hud-glow {
+  filter: drop-shadow(0 0 8px rgba(0, 240, 255, 0.4));
+}
+.hud-shadow {
+  box-shadow: 0 0 8px rgba(0, 240, 255, 0.8);
+}
+.hud-shadow-subtle {
+  box-shadow: 0 0 5px rgba(0, 240, 255, 0.5);
+}
+.phone-glow {
+  box-shadow: 0 0 80px rgba(0,240,255,0.2), 0 0 160px rgba(0,240,255,0.08);
+}
+.phone-inner-glow {
+  box-shadow: 0 0 24px rgba(0,240,255,0.25);
+}
+.terminal-glow {
+  box-shadow: 0 0 50px rgba(6,182,212,0.15);
+}
+.overlay-glow {
+  box-shadow: 0 0 50px rgba(0,255,255,0.1);
+}
+
+.light .hud-glow, [data-theme='light'] .hud-glow {
+  filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.1));
+}
+.light .hud-shadow, [data-theme='light'] .hud-shadow {
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+.light .hud-shadow-subtle, [data-theme='light'] .hud-shadow-subtle {
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.08);
+}
+.light .phone-glow, [data-theme='light'] .phone-glow {
+  box-shadow: 0 20px 40px rgba(0,0,0,0.1), 0 40px 80px rgba(0,0,0,0.05);
+}
+.light .phone-inner-glow, [data-theme='light'] .phone-inner-glow {
+  box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+}
+.light .terminal-glow, [data-theme='light'] .terminal-glow {
+  box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+}
+.light .overlay-glow, [data-theme='light'] .overlay-glow {
+  box-shadow: 0 10px 30px rgba(0,0,0,0.05);
 }
