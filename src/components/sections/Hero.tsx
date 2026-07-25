@@ -107,6 +107,7 @@ function KineticLetter({
 }
 
 import { TextHoverEffect } from "@/components/ui/TextHoverEffect";
+import SystemHUD from "@/components/ui/SystemHUD";
 
 export default function Hero() {
   const ref = useRef<HTMLElement>(null);
@@ -181,10 +182,10 @@ export default function Hero() {
           {/* Main Hero Text Content */}
           <div className="flex-1 flex flex-col items-start w-full lg:pl-10 lg:translate-x-6">
             
-
+            <SystemHUD />
 
             {/* Kinetic Name — THE STAR */}
-            <div className="w-fit flex flex-col items-start relative mt-10 lg:mt-12" style={{ perspective: "1200px" }}>
+            <div className="w-fit flex flex-col items-start relative mt-16 lg:mt-24" style={{ perspective: "1200px" }}>
               
               {/* Micro-typography / HUD framing around the name */}
               <div className="absolute -top-4 -left-4 w-4 h-4 border-t border-l border-[var(--text-muted)] opacity-30" />
