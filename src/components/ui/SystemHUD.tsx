@@ -2,11 +2,9 @@
 
 import { motion } from "framer-motion";
 import { useState, useEffect } from "react";
-import { Terminal, Cpu, Network, Activity } from "lucide-react";
-
 export default function SystemHUD() {
   const [typedText, setTypedText] = useState("");
-  const fullText = "> SYS.INIT...\n> AUTHENTICATED\n>";
+  const fullText = "> SYS.INIT...\n> AUTHENTICATED\n> User_Found - Ranjan_K\n>";
 
   useEffect(() => {
     let i = 0;
