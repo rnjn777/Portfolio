@@ -9,10 +9,12 @@ export default function Footer() {
     cmd: "init", resp: "Agent initialized. Type 'help' for commands."
   }]);
   const [input, setInput] = useState("");
-  const terminalEndRef = useRef<HTMLDivElement>(null);
+  const terminalContainerRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    terminalEndRef.current?.scrollIntoView({ behavior: "smooth" });
+    if (terminalContainerRef.current) {
+      terminalContainerRef.current.scrollTop = terminalContainerRef.current.scrollHeight;
+    }
   }, [history]);
 
   const handleCommand = (e: React.FormEvent) => {
@@ -50,7 +52,7 @@ export default function Footer() {
               <TerminalIcon size={14} className="text-[var(--text-muted)]" />
               <span className="text-[10px] font-mono text-[var(--text-muted)] uppercase tracking-wider">NK.AGENT // TERMINAL</span>
             </div>
-            <div className="p-4 sm:p-6 font-mono text-xs sm:text-sm h-[200px] overflow-y-auto custom-scrollbar flex flex-col">
+            <div ref={terminalContainerRef} className="p-4 sm:p-6 font-mono text-xs sm:text-sm h-[200px] overflow-y-auto custom-scrollbar flex flex-col">
               <div className="flex-1">
                 {history.map((entry, i) => (
                   <div key={i} className="mb-4">
@@ -63,7 +65,6 @@ export default function Footer() {
                     </div>
                   </div>
                 ))}
-                <div ref={terminalEndRef} />
               </div>
               <form onSubmit={handleCommand} className="mt-2 flex items-center gap-2">
                 <span className="text-[var(--text-muted)] opacity-50">{">"}</span>
