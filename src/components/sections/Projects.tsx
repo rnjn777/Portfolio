@@ -104,7 +104,7 @@ function ProjectCard({ project, index, total, progress }: { project: any, index:
   });
 
   const shortName = project.title.split(" ")[0].toLowerCase().replace(/[^a-z0-9]/g, "");
-  const displayName = shortName === "hanyura" ? "nk.studio" : shortName;
+  const displayName = shortName;
   const capitalizedName = displayName.charAt(0).toUpperCase() + displayName.slice(1);
   const gradient = projectGradients[index % projectGradients.length];
 
@@ -160,7 +160,7 @@ function ProjectCard({ project, index, total, progress }: { project: any, index:
             className="text-5xl sm:text-7xl md:text-[8rem] lg:text-[10rem] font-black tracking-tighter text-[var(--text-primary)] z-10 drop-shadow-lg mix-blend-overlay opacity-90 uppercase pointer-events-none"
             style={{ transform: "translateZ(50px)" }}
           >
-            {index === 0 ? "/nk.studio\u00AE" : displayName}
+            {displayName}
           </h3>
         </div>
       </motion.div>
@@ -180,7 +180,7 @@ function ProjectCard({ project, index, total, progress }: { project: any, index:
         style={{ opacity, display }}
       >
         <span className="text-xs sm:text-sm font-serif italic tracking-wide text-[var(--text-primary)]/70">
-          {index === 0 ? "/nk.studio" : capitalizedName}
+          {capitalizedName}
         </span>
       </motion.div>
     </div>
