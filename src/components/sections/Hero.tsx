@@ -107,7 +107,6 @@ function KineticLetter({
 }
 
 import { TextHoverEffect } from "@/components/ui/TextHoverEffect";
-import SystemHUD from "@/components/ui/SystemHUD";
 
 export default function Hero() {
   const ref = useRef<HTMLElement>(null);
@@ -153,11 +152,25 @@ export default function Hero() {
       className="relative min-h-[100svh] w-full flex flex-col items-center justify-center overflow-hidden bg-[var(--bg-void)] pt-20 pb-6 sm:pt-24 sm:pb-8 lg:pt-24 lg:pb-10"
       onMouseMove={handleMouseMove}
     >
-      {/* Background effect removed for cleaner look */}
+      {/* Absolute Background Text Effect */}
+      <div className="absolute inset-0 z-0 flex items-center justify-center opacity-10 pointer-events-none">
+        <TextHoverEffect text="RANJAN" />
+      </div>
 
       <NeuralNetwork3D />
 
+      {/* Decorative corner brackets — sci-fi framing */}
+      <div className="absolute top-24 left-8 w-12 h-12 border-l border-t border-[var(--accent-cyan)]/20 pointer-events-none z-10" />
+      <div className="absolute top-24 right-8 w-12 h-12 border-r border-t border-[var(--accent-cyan)]/20 pointer-events-none z-10" />
+      <div className="absolute bottom-8 left-8 w-12 h-12 border-l border-b border-[var(--accent-cyan)]/20 pointer-events-none z-10" />
+      <div className="absolute bottom-8 right-8 w-12 h-12 border-r border-b border-[var(--accent-cyan)]/20 pointer-events-none z-10" />
 
+      {/* Subtle horizontal scan line */}
+      <motion.div
+        animate={{ y: ["-100vh", "100vh"] }}
+        transition={{ repeat: Infinity, duration: 8, ease: "linear" }}
+        className="absolute left-0 right-0 h-[1px] bg-gradient-to-r from-transparent via-[var(--accent-cyan)]/15 to-transparent pointer-events-none z-5"
+      />
 
       {/* Scroll Parallax Container */}
       <motion.div
@@ -168,13 +181,20 @@ export default function Hero() {
           {/* Main Hero Text Content */}
           <div className="flex-1 flex flex-col items-start w-full lg:pl-10 lg:translate-x-6">
             
-            {/* System HUD replacing the simple terminal */}
-            <SystemHUD />
+
 
             {/* Kinetic Name — THE STAR */}
             <div className="w-fit flex flex-col items-start relative mt-10 lg:mt-12" style={{ perspective: "1200px" }}>
               
-              {/* Micro-typography removed to reduce clutter, since SystemHUD is present */}
+              {/* Micro-typography / HUD framing around the name */}
+              <div className="absolute -top-4 -left-4 w-4 h-4 border-t border-l border-[var(--text-muted)] opacity-30" />
+              <div className="absolute -bottom-4 -right-4 w-4 h-4 border-b border-r border-[var(--text-muted)] opacity-30" />
+              <div className="absolute -top-3 left-0 font-mono text-[8px] tracking-widest text-[var(--accent-cyan)] opacity-70">
+                [ID: RNJN-01] // SYS.OP
+              </div>
+              <div className="absolute -bottom-3 right-0 font-mono text-[8px] tracking-widest text-[var(--accent-cyan)] opacity-70">
+                LAT: 28.6083° N, LONG: 77.0350° E
+              </div>
 
               {/* First name — outlined/stroke style with subtle glow on hover handled in KineticLetter */}
               <div className="text-[14vw] sm:text-[12vw] md:text-[10vw] lg:text-[7.5vw] xl:text-[8vw] font-extrabold tracking-tighter leading-[0.85] uppercase drop-shadow-[0_0_15px_rgba(0,240,255,0.1)]">
