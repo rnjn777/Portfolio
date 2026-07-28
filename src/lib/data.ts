@@ -90,7 +90,7 @@ export const experience = [
   {
     role: "Creative and Operations Member",
     company: "GDG at NSUT Delhi",
-    period: "2023 — Present",
+    period: "2025 — Present",
     description:
       "Contributing to creative initiatives and operational workflows for Google Developers Group at NSUT Delhi.",
     type: "leadership" as const,
@@ -98,7 +98,7 @@ export const experience = [
   {
     role: "Social Media & PR Head",
     company: "SPIC MACAY NSUT",
-    period: "2023 — Present",
+    period: "2025 — 2026",
     description:
       "Led outreach, promotions, and public engagement initiatives for a National-Level Cultural Society.",
     type: "leadership" as const,
@@ -124,63 +124,7 @@ export const projects = [
     liveUrl: "#",
     githubUrl: "#",
     image: "/projects/hanyura.png",
-  },
-  {
-    title: "Urban Green Corridor Platform",
-    description:
-      "AI-powered spatial intelligence platform for urban sustainability and environmental impact forecasting.",
-    problem:
-      "Urban planning lacks real-time, data-driven insights for optimizing green corridor interventions.",
-    solution:
-      "Engineered a full-stack GIS platform. Integrated Google Gemini 2.0 Flash to develop an AI Urban Ecology Assistant. Implemented real-time environmental forecasting using Open-Meteo APIs.",
-    techStack: ["Flask", "GeoPandas", "Leaflet.js", "Gemini 2.0 Flash", "Python"],
-    features: [
-      "AI Urban Ecology Assistant processing NLP queries",
-      "Algorithmic scoring for greening interventions",
-      "Real-time environmental forecasting (AQI, temperature)",
-      "Full-stack GIS visualization",
-    ],
-    liveUrl: "#",
-    githubUrl: "#",
-    image: "/projects/urban.png",
-  },
-  {
-    title: "KrishiQuest",
-    description:
-      "Designed a gamified digital platform to promote sustainable farming practices among small and marginal farmers.",
-    problem:
-      "Lack of accessible, engaging educational resources for farmers regarding sustainable practices.",
-    solution:
-      "Developed a mobile-first full-stack platform using React.js and Node.js with gamified learning (quizzes, challenges, rewards). Conceptualized an AI-assisted recommendation system.",
-    techStack: ["React.js", "Node.js", "Tailwind CSS", "JavaScript", "HTML/CSS"],
-    features: [
-      "Gamified learning quizzes and challenges",
-      "Reward mechanisms for farming practices",
-      "AI-assisted personalized guidance",
-      "Mobile-first design for low-spec devices",
-    ],
-    liveUrl: "#",
-    githubUrl: "#",
-    image: "/projects/krishi.png",
-  },
-  {
-    title: "House Price Prediction",
-    description:
-      "Machine learning pipeline for real-estate price prediction and model evaluation.",
-    problem:
-      "Real estate pricing relies on subjective analysis and lacks robust data-driven predictive modeling.",
-    solution:
-      "Built an end-to-end prediction workflow covering data ingestion, feature engineering, training, and evaluation. Applied hyperparameter tuning for generalization.",
-    techStack: ["Python", "Pandas", "NumPy", "Scikit-learn"],
-    features: [
-      "Exploratory data analysis (EDA)",
-      "Train-test splitting and performance metrics",
-      "Hyperparameter tuning and model selection",
-      "End-to-end ML prediction workflow",
-    ],
-    liveUrl: "#",
-    githubUrl: "#",
-    image: "/projects/house.png",
+    video: "/projects/Hanyura.mp4",
   },
 ];
 

@@ -146,7 +146,16 @@ function ProjectCard({ project, index, total, progress }: { project: any, index:
           <div className="absolute inset-0 noise-overlay opacity-40 mix-blend-overlay"></div>
           <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(255,255,255,0.08)_0%,transparent_60%)] pointer-events-none"></div>
 
-          {project.image && (
+          {project.video ? (
+            <video 
+              src={project.video}
+              autoPlay
+              loop
+              muted
+              playsInline
+              className="absolute inset-0 w-full h-full object-cover mix-blend-overlay opacity-60 pointer-events-none"
+            />
+          ) : project.image ? (
             <Image 
               src={project.image}
               alt={project.title}
@@ -154,7 +163,7 @@ function ProjectCard({ project, index, total, progress }: { project: any, index:
               className="object-cover mix-blend-overlay opacity-60 pointer-events-none"
               sizes="(max-width: 768px) 90vw, 75vw"
             />
-          )}
+          ) : null}
 
           <h3 
             className="text-5xl sm:text-7xl md:text-[8rem] lg:text-[10rem] font-black tracking-tighter text-[var(--text-primary)] z-10 drop-shadow-lg mix-blend-overlay opacity-90 uppercase pointer-events-none"
